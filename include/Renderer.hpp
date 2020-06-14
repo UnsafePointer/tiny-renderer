@@ -6,11 +6,14 @@
 #include "RendererBuffer.hpp"
 #include "Vertex.hpp"
 #include "Texture.hpp"
-#include "Pixel.hpp"
 
 class Renderer {
     SDL_GLContext glContext;
     SDL_Window *window;
+
+    uint32_t width;
+    uint32_t height;
+    uint32_t scale;
 
     std::unique_ptr<RendererProgram> program;
     std::unique_ptr<RendererBuffer<Vertex>> buffer;
@@ -18,14 +21,11 @@ class Renderer {
     std::unique_ptr<Texture> framebufferTexture;
 
     std::unique_ptr<RendererProgram> screenProgram;
-    std::unique_ptr<RendererBuffer<Pixel>> screenBuffer;
 public:
-    Renderer();
+    Renderer(uint32_t width, uint32_t height, uint32_t scale);
     ~Renderer();
 
-    void prepareFrame();
     void render();
-    void finishFrame();
 
-    void addPolygon(std::vector<Vertex> vertices);
+    void addVertices(std::vector<Vertex> vertices);
 };

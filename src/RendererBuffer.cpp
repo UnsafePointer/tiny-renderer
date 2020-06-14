@@ -2,8 +2,6 @@
 #include <stddef.h>
 #include <iostream>
 #include "Vertex.hpp"
-#include "Texel.hpp"
-#include "Pixel.hpp"
 
 using namespace std;
 
@@ -72,23 +70,4 @@ void RendererBuffer<Vertex>::enableAttributes() const {
     glEnableVertexAttribArray(colorIdx);
 }
 
-template <>
-void RendererBuffer<Texel>::enableAttributes() const {
-    GLuint positionIdx = program->findProgramAttribute("position");
-    glVertexAttribPointer(positionIdx, 2, GL_FLOAT, GL_FALSE, sizeof(Texel), (void*)offsetof(struct Texel, position));
-    glEnableVertexAttribArray(positionIdx);
-}
-
-template <>
-void RendererBuffer<Pixel>::enableAttributes() const {
-    GLuint screenPositionIdx = program->findProgramAttribute("position");
-    glVertexAttribPointer(screenPositionIdx, 2, GL_FLOAT, GL_FALSE, sizeof(Pixel), (void*)offsetof(struct Pixel, screenPosition));
-    glEnableVertexAttribArray(screenPositionIdx);
-    GLuint texturePositionIdx = program->findProgramAttribute("texturePosition");
-    glVertexAttribPointer(texturePositionIdx, 2, GL_FLOAT, GL_FALSE, sizeof(Pixel), (void*)offsetof(struct Pixel, framebufferPosition));
-    glEnableVertexAttribArray(texturePositionIdx);
-}
-
 template class RendererBuffer<Vertex>;
-template class RendererBuffer<Texel>;
-template class RendererBuffer<Pixel>;
