@@ -25,9 +25,10 @@ Renderer::Renderer(uint32_t width, uint32_t height, uint32_t scale) : width(widt
 
     program = make_unique<RendererProgram>("glsl/vertex.glsl", "glsl/fragment.glsl");
     program->useProgram();
-
-    GLuint offsetUniform = program->findProgramUniform("offset");
-    glUniform2f(offsetUniform, 0.0, 0.0);
+    GLuint widthUniform = program->findProgramUniform("width");
+    glUniform1f(widthUniform, width);
+    GLuint heightUniform = program->findProgramUniform("height");
+    glUniform1f(heightUniform, height);
 
     buffer = make_unique<RendererBuffer<Vertex>>(program, 1024);
 
@@ -40,7 +41,22 @@ Renderer::~Renderer() {
     SDL_Quit();
 }
 
-void Renderer::addVertices(std::vector<Vertex> vertices) {
+std::vector<Vertex> Renderer::verticesForPixel(Vertex pixel) {
+    Vertex v1 = Vertex(pixel.position, pixel.color);
+    Vertex v2 = Vertex({pixel.position.x + 1, pixel.position.y}, pixel.color);
+    Vertex v3 = Vertex({pixel.position.x + 1, pixel.position.y + 1}, pixel.color);
+    Vertex v4 = Vertex(pixel.position, pixel.color);
+    Vertex v5 = Vertex({pixel.position.x, pixel.position.y + 1}, pixel.color);
+    Vertex v6 = Vertex({pixel.position.x + 1, pixel.position.y + 1}, pixel.color);
+    return {v1, v2, v3, v4, v5, v6};
+}
+
+void Renderer::addPixels(std::vector<Vertex> pixels) {
+    std::vector<Vertex> vertices = {};
+    for (const auto& pixel : pixels) {
+        std::vector<Vertex> verticesForPixel = this->verticesForPixel(pixel);
+        vertices.insert(vertices.end(), verticesForPixel.begin(), verticesForPixel.end());
+    }
     buffer->addData(vertices);
 }
 

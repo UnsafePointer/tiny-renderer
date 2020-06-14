@@ -8,13 +8,17 @@ int main() {
         VRAM.insert(VRAM.end(), tileData.begin(), tileData.end());
     }
 
-    std::vector<Vertex> vertices = {
-         Vertex(-0.5f, -0.5f,  1.0f, 0.0f, 0.0f),
-         Vertex(0.0f, 0.5f,  0.0f, 1.0f, 0.0f),
-         Vertex(0.5f,  -0.5f,  0.0f, 0.0f, 1.0f)
+    std::vector<Vertex> pixels = {
+        Vertex(0, 0,  1.0f, 0.0f, 0.0f),
+        Vertex(0, 1,  0.0f, 1.0f, 0.0f),
+        Vertex(1, 0,  0.0f, 0.0f, 1.0f),
+        Vertex(1, 1,  1.0f, 1.0f, 1.0f),
+        Vertex(2, 2,  1.0f, 1.0f, 1.0f),
+        Vertex(3, 3,  1.0f, 0.0f, 0.0f),
+        Vertex(4, 4,  0.0f, 1.0f, 0.0f)
     };
 
-    Renderer renderer = Renderer(2, 2, 100);
+    Renderer renderer = Renderer(5, 5, 200);
     bool quit = false;
     while (!quit) {
         SDL_Event event;
@@ -23,7 +27,7 @@ int main() {
                 quit = true;
             }
         }
-        renderer.addVertices(vertices);
+        renderer.addPixels(pixels);
         renderer.render();
     }
     SDL_Quit();
