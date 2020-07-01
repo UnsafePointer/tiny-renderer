@@ -1,16 +1,24 @@
 #include "Renderer.hpp"
+#include <ctime>
+
+std::vector<Vertex> generatePixels(int width, int height) {
+    std::vector<Vertex> pixels = {};
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            pixels.push_back(Vertex(i, j,  rand() % 255 / 255.0f, rand() % 255 / 255.0f, rand() % 255 / 255.0f));
+        }
+    }
+    return pixels;
+}
 
 int main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
-    std::vector<Vertex> pixels = {
-        Vertex(0, 0,  255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f),
-        Vertex(0, 1,  170.0f / 255.0f, 170.0f / 255.0f, 170.0f / 255.0f),
-        Vertex(1, 0,  85.0f / 255.0f, 85.0f / 255.0f, 85.0f / 255.0f),
-        Vertex(1, 1,  0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f),
-    };
+    srand(time(NULL));
+    int width = 2;
+    int height = 2;
 
-    Renderer renderer = Renderer(2, 2, 300);
+    Renderer renderer = Renderer(width, height, 300);
     bool quit = false;
     uint32_t frameTimes = 0;
     uint32_t frameCounter = 0;
@@ -22,6 +30,7 @@ int main(int argc, char* argv[]) {
             }
         }
         uint32_t frameTime = SDL_GetTicks();
+        std::vector<Vertex> pixels = generatePixels(width, height);
         renderer.addPixels(pixels);
         renderer.render();
         frameTimes += SDL_GetTicks() - frameTime;
