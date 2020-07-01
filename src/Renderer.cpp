@@ -67,3 +67,7 @@ void Renderer::render() {
     SDL_GL_SwapWindow(window);
     checkForOpenGLErrors();
 }
+
+void Renderer::updateWindowTitle(std::string title) const {
+    SDL_SetWindowTitle(window, title.c_str());
+}

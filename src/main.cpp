@@ -12,6 +12,8 @@ int main(int argc, char* argv[]) {
 
     Renderer renderer = Renderer(2, 2, 300);
     bool quit = false;
+    uint32_t frameTimes = 0;
+    uint32_t frameCounter = 0;
     while (!quit) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -19,8 +21,20 @@ int main(int argc, char* argv[]) {
                 quit = true;
             }
         }
+        uint32_t frameTime = SDL_GetTicks();
         renderer.addPixels(pixels);
         renderer.render();
+        frameTimes += SDL_GetTicks() - frameTime;
+        frameCounter++;
+        if (frameCounter >= 60) {
+            frameCounter = 0;
+            uint32_t averageFrameTime = frameTimes / 60;
+            char buff[100];
+            snprintf(buff, sizeof(buff), " - %d ms - %d ms", averageFrameTime, frameTimes);
+            std::string buffAsStdStr = buff;
+            renderer.updateWindowTitle(buffAsStdStr);
+            frameTimes = 0;
+        }
     }
     SDL_Quit();
     return 0;

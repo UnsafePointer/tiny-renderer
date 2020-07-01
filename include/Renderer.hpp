@@ -30,4 +30,6 @@ public:
     void render();
 
     void addPixels(std::vector<Vertex> pixels);
+
+    void updateWindowTitle(std::string title) const;
 };
