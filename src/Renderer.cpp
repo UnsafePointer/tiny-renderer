@@ -32,8 +32,6 @@ Renderer::Renderer(uint32_t width, uint32_t height, uint32_t scale) : width(widt
 
     buffer = make_unique<RendererBuffer<Vertex>>(program, width * height * 6);
 
-    framebufferTexture = make_unique<Texture>(width * scale, height * scale);
-
     checkForOpenGLErrors();
 }
 

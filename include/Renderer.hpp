@@ -18,8 +18,6 @@ class Renderer {
     std::unique_ptr<RendererProgram> program;
     std::unique_ptr<RendererBuffer<Vertex>> buffer;
 
-    std::unique_ptr<Texture> framebufferTexture;
-
     std::unique_ptr<RendererProgram> screenProgram;
 
     std::vector<Vertex> verticesForPixel(Vertex pixel);
