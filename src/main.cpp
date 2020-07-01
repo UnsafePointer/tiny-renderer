@@ -1,6 +1,8 @@
 #include "Renderer.hpp"
 
-int main() {
+int main(int argc, char* argv[]) {
+    (void)argc;
+    (void)argv;
     std::vector<Vertex> pixels = {
         Vertex(0, 0,  255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f),
         Vertex(0, 1,  170.0f / 255.0f, 170.0f / 255.0f, 170.0f / 255.0f),
