@@ -30,7 +30,7 @@ Renderer::Renderer(uint32_t width, uint32_t height, uint32_t scale) : width(widt
     GLuint heightUniform = program->findProgramUniform("height");
     glUniform1f(heightUniform, height);
 
-    buffer = make_unique<RendererBuffer<Vertex>>(program, 1024);
+    buffer = make_unique<RendererBuffer<Vertex>>(program, width * height * 6);
 
     framebufferTexture = make_unique<Texture>(width * scale, height * scale);
 

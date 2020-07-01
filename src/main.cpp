@@ -15,10 +15,10 @@ int main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
     srand(time(NULL));
-    int width = 2;
-    int height = 2;
+    int width = 160;
+    int height = 144;
 
-    Renderer renderer = Renderer(width, height, 300);
+    Renderer renderer = Renderer(width, height, 6);
     bool quit = false;
     uint32_t frameTimes = 0;
     uint32_t frameCounter = 0;
