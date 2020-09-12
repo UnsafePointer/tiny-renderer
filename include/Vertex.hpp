@@ -10,3 +10,11 @@ public:
     Vertex(Point position, Color color);
     ~Vertex();
 };
+
+struct Pixel {
+    Point position;
+    Point texturePosition;
+
+    Pixel(Point position, Point texturePosition);
+    ~Pixel();
+};

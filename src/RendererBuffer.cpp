@@ -52,10 +52,10 @@ void RendererBuffer<T>::addData(vector<T> data) {
 }
 
 template <class T>
-void RendererBuffer<T>::draw() {
+void RendererBuffer<T>::draw(GLenum mode) {
     vao->bind();
     program->useProgram();
-    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)size);
+    glDrawArrays(mode, 0, (GLsizei)size);
     clean();
 }
 
@@ -70,4 +70,16 @@ void RendererBuffer<Vertex>::enableAttributes() const {
     glEnableVertexAttribArray(colorIdx);
 }
 
+template <>
+void RendererBuffer<Pixel>::enableAttributes() const {
+    GLuint positionIdx = program->findProgramAttribute("position");
+    glVertexAttribPointer(positionIdx, 2, GL_FLOAT, GL_FALSE, sizeof(Pixel), (void*)offsetof(struct Pixel, position));
+    glEnableVertexAttribArray(positionIdx);
+
+    GLuint texturePositionIdx = program->findProgramAttribute("texturePosition");
+    glVertexAttribPointer(texturePositionIdx, 2, GL_FLOAT, GL_FALSE, sizeof(Pixel), (void*)offsetof(struct Pixel, texturePosition));
+    glEnableVertexAttribArray(texturePositionIdx);
+}
+
 template class RendererBuffer<Vertex>;
+template class RendererBuffer<Pixel>;

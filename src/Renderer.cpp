@@ -23,6 +23,10 @@ Renderer::Renderer(uint32_t width, uint32_t height, uint32_t scale) : width(widt
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+    screenTexture = make_unique<Texture>(width * scale, height * scale);
+    screenProgram = make_unique<RendererProgram>("glsl/screen_vertex.glsl", "glsl/screen_fragment.glsl");
+    screenBuffer = make_unique<RendererBuffer<Pixel>>(screenProgram, 1024);
+
     program = make_unique<RendererProgram>("glsl/vertex.glsl", "glsl/fragment.glsl");
     program->useProgram();
     GLuint widthUniform = program->findProgramUniform("width");
@@ -59,11 +63,27 @@ void Renderer::addPixels(std::vector<Vertex> pixels) {
 }
 
 void Renderer::render() {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    buffer->draw();
-    SDL_GL_SwapWindow(window);
+    {
+        Framebuffer framebuffer = Framebuffer(screenTexture);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        program->useProgram();
+        buffer->draw(GL_TRIANGLES);
+    }
     checkForOpenGLErrors();
+
+    screenTexture->bind(GL_TEXTURE0);
+    screenProgram->useProgram();
+    std::vector<Pixel> data = {
+        Pixel({-1.0f, -1.0f}, {0.0f, 1.0f}),
+        Pixel({1.0f, -1.0f}, {1.0f, 1.0f}),
+        Pixel({-1.0f, 1.0f}, {0.0f, 0.0f}),
+        Pixel({1.0f, 1.0f}, {1.0f, 0.0f}),
+    };
+    screenBuffer->addData(data);
+    screenBuffer->draw(GL_TRIANGLE_STRIP);
+
+    SDL_GL_SwapWindow(window);
 }
 
 void Renderer::updateWindowTitle(std::string title) const {
