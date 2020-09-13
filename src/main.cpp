@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     int width = 160;
     int height = 144;
 
-    Renderer renderer = Renderer(width, height, 6);
+    Renderer renderer = Renderer(width, height);
     bool quit = false;
     uint32_t frameTimes = 0;
     uint32_t frameCounter = 0;

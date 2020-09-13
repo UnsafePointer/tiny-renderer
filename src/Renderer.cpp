@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Renderer::Renderer(uint32_t width, uint32_t height, uint32_t scale) : width(width), height(height), scale(scale) {
+Renderer::Renderer(uint32_t width, uint32_t height) : width(width), height(height) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         cout << "Error initializing SDL: " << SDL_GetError() << endl;
         exit(1);
@@ -13,7 +13,7 @@ Renderer::Renderer(uint32_t width, uint32_t height, uint32_t scale) : width(widt
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-    window = SDL_CreateWindow("しのぶ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * scale, height * scale, SDL_WINDOW_OPENGL);
+    window = SDL_CreateWindow("しのぶ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width * 6, height * 6, SDL_WINDOW_OPENGL);
     glContext = SDL_GL_CreateContext(window);
     if (!gladLoadGLLoader((GLADloadproc) SDL_GL_GetProcAddress)) {
         cout << "Failed to initialize the OpenGL context." << endl;
@@ -23,7 +23,7 @@ Renderer::Renderer(uint32_t width, uint32_t height, uint32_t scale) : width(widt
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-    screenTexture = make_unique<Texture>(width * scale, height * scale);
+    screenTexture = make_unique<Texture>(width, height);
     screenProgram = make_unique<RendererProgram>("glsl/screen_vertex.glsl", "glsl/screen_fragment.glsl");
     screenBuffer = make_unique<RendererBuffer<Pixel>>(screenProgram, 1024);
 
@@ -64,14 +64,16 @@ void Renderer::addPixels(std::vector<Vertex> pixels) {
 
 void Renderer::render() {
     {
+        glViewport(0, 0, 144, 160);
         Framebuffer framebuffer = Framebuffer(screenTexture);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         program->useProgram();
         buffer->draw(GL_TRIANGLES);
     }
     checkForOpenGLErrors();
 
+    glViewport(0, 0, 160 * 6, 144 * 6);
     screenTexture->bind(GL_TEXTURE0);
     screenProgram->useProgram();
     std::vector<Pixel> data = {

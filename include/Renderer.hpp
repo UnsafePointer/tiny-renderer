@@ -24,7 +24,7 @@ class Renderer {
 
     std::vector<Vertex> verticesForPixel(Vertex pixel);
 public:
-    Renderer(uint32_t width, uint32_t height, uint32_t scale);
+    Renderer(uint32_t width, uint32_t height);
     ~Renderer();
 
     void render();
