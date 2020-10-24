@@ -1,22 +1,43 @@
 #include "Renderer.hpp"
 #include <ctime>
 
-std::vector<Vertex> generatePixels(int width, int height) {
-    std::vector<Vertex> pixels = {};
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-            pixels.push_back(Vertex(i, j,  rand() % 255 / 255.0f, rand() % 255 / 255.0f, rand() % 255 / 255.0f));
-        }
-    }
-    return pixels;
+std::vector<GLfloat> generateTextureData(int width, int height) {
+    (void)width;
+    (void)height;
+    std::vector<GLfloat> data = {};
+    // for (int i = 0; i < width; i++) {
+    //     for (int j = 0; j < height; j++) {
+    //         data.push_back(0x0);
+    //         data.push_back(0xFF);
+    //         data.push_back(0x0);
+    //         data.push_back(0xFF);
+    //     }
+    // }
+
+    data.push_back(0.0f);
+    data.push_back(0.0f);
+    data.push_back(0.0f);
+
+    data.push_back(1.0f);
+    data.push_back(1.0f);
+    data.push_back(1.0f);
+
+    data.push_back(0.0f);
+    data.push_back(0.0f);
+    data.push_back(0.0f);
+
+    data.push_back(0.0f);
+    data.push_back(0.0f);
+    data.push_back(0.0f);
+    return data;
 }
 
 int main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
     srand(time(NULL));
-    int width = 160;
-    int height = 144;
+    int width = 600;
+    int height = 400;
 
     Renderer renderer = Renderer(width, height);
     bool quit = false;
@@ -30,8 +51,8 @@ int main(int argc, char* argv[]) {
             }
         }
         uint32_t frameTime = SDL_GetTicks();
-        std::vector<Vertex> pixels = generatePixels(width, height);
-        renderer.addPixels(pixels);
+        std::vector<GLfloat> data = generateTextureData(width, height);
+        renderer.addTextureData(data);
         renderer.render();
         frameTimes += SDL_GetTicks() - frameTime;
         frameCounter++;

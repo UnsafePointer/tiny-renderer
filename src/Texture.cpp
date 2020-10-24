@@ -5,7 +5,11 @@ using namespace std;
 Texture::Texture(GLsizei width, GLsizei height) : width(width), height(height) {
     glGenTextures(1, &object);
     glBindTexture(GL_TEXTURE_2D, object);
-    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB5_A1, width, height);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, width, height);
 }
 
 Texture::~Texture() {
@@ -13,6 +17,7 @@ Texture::~Texture() {
 }
 
 void Texture::bind(GLenum texture) {
-    glActiveTexture(texture);
+    (void)texture;
+    // glActiveTexture(texture);
     glBindTexture(GL_TEXTURE_2D, object);
 }

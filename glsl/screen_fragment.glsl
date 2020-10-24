@@ -75,6 +75,7 @@ vec4 scale(sampler2D image, vec2 position, vec2 input_resolution)
 }
 
 void main() {
-    vec2 input_resolution = textureSize(screenTexture, 0);
-    FragColor = scale(screenTexture, fragmentTexturePosition, input_resolution);
+    // vec2 input_resolution = textureSize(screenTexture, 0);
+    // FragColor = scale(screenTexture, fragmentTexturePosition, input_resolution);
+    FragColor = texture(screenTexture, fragmentTexturePosition);
 }

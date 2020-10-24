@@ -15,21 +15,16 @@ class Renderer {
     uint32_t height;
     uint32_t scale;
 
+    std::unique_ptr<Texture> texture;
     std::unique_ptr<RendererProgram> program;
-    std::unique_ptr<RendererBuffer<Vertex>> buffer;
-
-    std::unique_ptr<RendererProgram> screenProgram;
-    std::unique_ptr<Texture> screenTexture;
-    std::unique_ptr<RendererBuffer<Pixel>> screenBuffer;
-
-    std::vector<Vertex> verticesForPixel(Vertex pixel);
+    std::unique_ptr<RendererBuffer<Pixel>> buffer;
 public:
     Renderer(uint32_t width, uint32_t height);
     ~Renderer();
 
     void render();
 
-    void addPixels(std::vector<Vertex> pixels);
+    void addTextureData(std::vector<GLfloat> textureData);
 
     void updateWindowTitle(std::string title) const;
 };
